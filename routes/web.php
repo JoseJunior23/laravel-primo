@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Jobs\FindMaxPrime;
+use App\Jobs\MakeSum;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -26,4 +27,10 @@ Route::get('/notifications', function () {
     foreach ($user->unreadNotifications as $noti) {
         echo '<h3>' . $noti->data['description'] . '</h3>';
     }
+});
+
+Route::get('soma/{num1}/{num2}', function ($num1, $num2) {
+    MakeSum::dispatch($num1, $num2);
+
+    return 'O calculo será realizado em fila';
 });
