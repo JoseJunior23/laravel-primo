@@ -20,3 +20,10 @@ Route::get('/primo/{limit}', function ($limit) {
 
     return 'O calculo será realizado em fila';
 });
+
+Route::get('/notifications', function () {
+    $user = auth()->user();
+    foreach ($user->unreadNotifications as $noti) {
+        echo '<h3>' . $noti->data['description'] . '</h3>';
+    }
+});
