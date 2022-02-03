@@ -24,12 +24,12 @@ Route::get('/primo/{limit}', function ($limit) {
     return 'O calculo será realizado em fila';
 });
 
-// Route::get('/notifications', function () {
-//     $user = auth()->user();
-//     foreach ($user->unreadNotifications as $noti) {
-//         echo '<h3>' . $noti->data['description'] . '</h3>';
-//     }
-// });
+Route::get('/notifications', function () {
+    $user = auth()->user();
+    foreach ($user->unreadNotifications as $noti) {
+        echo '<h3>' . $noti->data['description'] . '</h3>';
+    }
+});
 
 Route::get('soma/{num1}/{num2}', function ($num1, $num2) {
     MakeSum::dispatch($num1, $num2);
@@ -43,14 +43,7 @@ Route::get('/celsius/{farenheit}', function ($celsius) {
 });
 
 Route::get('/div/{num1}/{num2}', function ($num1, $num2) {
-    MakeDiv::dispatch($num1, $num2);
+    MakeDiv::dispatch($num1, $num2, auth()->id());
 
     return 'A divisão está sendo realizada ...';
-});
-
-Route::get('/notifications', function () {
-    $user = auth()->user();
-    foreach ($user->unreadNotifications as $noti) {
-        echo '<h3>' . $noti->data['description'] . '</h3>';
-    }
 });

@@ -14,18 +14,22 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 class MakeDiv implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $num1;
     public $num2;
     public $userId;
+
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($num1, $num2)
+    public function __construct($num1, $num2, $userId)
     {
         $this->num1 = $num1;
         $this->num2 = $num2;
+        $this->userId = $userId;
     }
 
     /**
@@ -35,19 +39,18 @@ class MakeDiv implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->num2 === 0) {
-            $user = User::find($this->userId);
+        $user = User::find($this->userId);
+
+        if ($this->num2 == 0) {
             $user->notify(new DivMade(
                 'Erro',
                 'Divisão por zero'
             ));
         } else {
             $div = $this->num1 / $this->num2;
-
-            $user = User::find($this->userId);
             $user->notify(new DivMade(
                 'Sucesso',
-                'O resultado da divisão  entre ' . $this->num1 . ' e ' . $this->num2 . ' é = ' . $this->$div
+                'Div = ' . $div
             ));
         }
     }
