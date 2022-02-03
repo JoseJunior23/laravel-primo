@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Jobs\ConvertCelsius;
 use App\Jobs\FindMaxPrime;
 use App\Jobs\MakeSum;
 
@@ -33,4 +34,9 @@ Route::get('soma/{num1}/{num2}', function ($num1, $num2) {
     MakeSum::dispatch($num1, $num2);
 
     return 'O calculo será realizado em fila';
+});
+
+Route::get('/celsius/{farenheit}', function ($celsius) {
+    ConvertCelsius::dispatch(($celsius));
+    return 'A conversão de temperatura está sendo realizada ...';
 });
