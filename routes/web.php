@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Jobs\ConvertCelsius;
 use App\Jobs\FindMaxPrime;
+use App\Jobs\MakeDiv;
 use App\Jobs\MakeSum;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
@@ -23,12 +24,12 @@ Route::get('/primo/{limit}', function ($limit) {
     return 'O calculo será realizado em fila';
 });
 
-Route::get('/notifications', function () {
-    $user = auth()->user();
-    foreach ($user->unreadNotifications as $noti) {
-        echo '<h3>' . $noti->data['description'] . '</h3>';
-    }
-});
+// Route::get('/notifications', function () {
+//     $user = auth()->user();
+//     foreach ($user->unreadNotifications as $noti) {
+//         echo '<h3>' . $noti->data['description'] . '</h3>';
+//     }
+// });
 
 Route::get('soma/{num1}/{num2}', function ($num1, $num2) {
     MakeSum::dispatch($num1, $num2);
@@ -39,4 +40,17 @@ Route::get('soma/{num1}/{num2}', function ($num1, $num2) {
 Route::get('/celsius/{farenheit}', function ($celsius) {
     ConvertCelsius::dispatch(($celsius));
     return 'A conversão de temperatura está sendo realizada ...';
+});
+
+Route::get('/div/{num1}/{num2}', function ($num1, $num2) {
+    MakeDiv::dispatch($num1, $num2);
+
+    return 'A divisão está sendo realizada ...';
+});
+
+Route::get('/notifications', function () {
+    $user = auth()->user();
+    foreach ($user->unreadNotifications as $noti) {
+        echo '<h3>' . $noti->data['description'] . '</h3>';
+    }
 });
